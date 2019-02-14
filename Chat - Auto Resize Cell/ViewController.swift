@@ -56,32 +56,43 @@ class DateHeaderLabel : UILabel
 class ViewController: UITableViewController {
 
     fileprivate let cellId = "identifier"
+    var chatMessages = [[ChatMessage]]()
     
-    let chatMessages = [
-        [
-            ChatMessage(message: "This is Nattudurai Eswaramurthy", isOwnMsg: true, msgDate : Date.dateFromCustomString(customString: "24/09/2018")),
-            ChatMessage(message: "This is the sample app for chat application where we can see the dynamic cell depedns on the text size", isOwnMsg: true,  msgDate : Date.dateFromCustomString(customString: "24/09/2018")),
-            ChatMessage(message: "This is the sample app for chat application where we can see the dynamic cell depedns on the text size jadksbjkdasbcskjcbskcbskdcvbskdcvbaskdjvbksjdvbaskdjvbaksdvbkasdvskbdv", isOwnMsg: false,  msgDate : Date.dateFromCustomString(customString: "24/09/2018")),
-        ],
-        [ChatMessage(message: "This is Priya Nattudurai", isOwnMsg: false, msgDate : Date.dateFromCustomString(customString: "16/10/2018")),
-         ChatMessage(message: "This is the sample app for chat application where we can see the dynamic cell depedns on the text size", isOwnMsg: true,  msgDate : Date.dateFromCustomString(customString: "16/10/2018")),
-         ChatMessage(message: "This is the sample app for chat application where we can see the dynamic cell depedns on the text size jadksbjkdasbcskjcbskcbskdcvbskdcvbaskdjvbksjdvbaskdjvbaksdvbkasdvskbdv", isOwnMsg: false,  msgDate : Date.dateFromCustomString(customString: "16/10/2018")),
-         ],
-        [ChatMessage(message: "This is Sarnika Nattudurai", isOwnMsg: true, msgDate : Date.dateFromCustomString(customString: "31/10/2018")),
-         ChatMessage(message: "This is the sample app for chat application where we can see the dynamic cell depedns on the text size", isOwnMsg: false,  msgDate : Date.dateFromCustomString(customString: "31/10/2018")),
-         ChatMessage(message: "This is the sample app for chat application where we can see the dynamic cell depedns on the text size jadksbjkdasbcskjcbskcbskdcvbskdcvbaskdjvbksjdvbaskdjvbaksdvbkasdvskbdv", isOwnMsg: true,  msgDate : Date.dateFromCustomString(customString: "31/10/2018")),
-         ],
-        [ChatMessage(message: "This is Mounik Sharvanth Nattudurai", isOwnMsg: true, msgDate : Date.dateFromCustomString(customString: "27/02/2019")),
-         ChatMessage(message: "This is the sample app for chat application where we can see the dynamic cell depedns on the text size", isOwnMsg: false,  msgDate : Date.dateFromCustomString(customString: "27/02/2019")),
-         ChatMessage(message: "This is the sample app for chat application where we can see the dynamic cell depedns on the text size jadksbjkdasbcskjcbskcbskdcvbskdcvbaskdjvbksjdvbaskdjvbaksdvbkasdvskbdv", isOwnMsg: true,  msgDate : Date.dateFromCustomString(customString: "27/02/2019")),
-         ],
-        ]
+    let messagesFromServer = [ChatMessage(message: "This is Nattudurai Eswaramurthy", isOwnMsg: true, msgDate : Date.dateFromCustomString(customString:     "24/09/2018")),
+                              ChatMessage(message: "This is the sample app for chat application where we can see the dynamic cell depedns on the text size", isOwnMsg: true,  msgDate : Date.dateFromCustomString(customString: "24/09/2018")),
+                              ChatMessage(message: "This is the sample app for chat application where we can see the dynamic cell depedns on the text size jadksbjkdasbcskjcbskcbskdcvbskdcvbaskdjvbksjdvbaskdjvbaksdvbkasdvskbdv", isOwnMsg: false,  msgDate : Date.dateFromCustomString(customString: "24/09/2018")),
+                              ChatMessage(message: "This is Priya Nattudurai", isOwnMsg: false, msgDate : Date.dateFromCustomString(customString: "16/10/2018")),
+                               ChatMessage(message: "This is the sample app for chat application where we can see the dynamic cell depedns on the text size", isOwnMsg: true,  msgDate : Date.dateFromCustomString(customString: "16/10/2018")),
+                               ChatMessage(message: "This is the sample app for chat application where we can see the dynamic cell depedns on the text size jadksbjkdasbcskjcbskcbskdcvbskdcvbaskdjvbksjdvbaskdjvbaksdvbkasdvskbdv", isOwnMsg: false,  msgDate : Date.dateFromCustomString(customString: "16/10/2018")),
+                               ChatMessage(message: "This is Sarnika Nattudurai", isOwnMsg: true, msgDate : Date.dateFromCustomString(customString: "31/10/2018")),
+                               ChatMessage(message: "This is the sample app for chat application where we can see the dynamic cell depedns on the text size", isOwnMsg: false,  msgDate : Date.dateFromCustomString(customString: "31/10/2018")),
+                               ChatMessage(message: "This is the sample app for chat application where we can see the dynamic cell depedns on the text size jadksbjkdasbcskjcbskcbskdcvbskdcvbaskdjvbksjdvbaskdjvbaksdvbkasdvskbdv", isOwnMsg: true,  msgDate : Date.dateFromCustomString(customString: "31/10/2018")),
+                               ChatMessage(message: "This is Mounik Sharvanth Nattudurai", isOwnMsg: true, msgDate : Date.dateFromCustomString(customString: "27/02/2019")),
+                                ChatMessage(message: "This is the sample app for chat application where we can see the dynamic cell depedns on the text size", isOwnMsg: false,  msgDate : Date.dateFromCustomString(customString: "27/02/2019")),
+                                ChatMessage(message: "This is the sample app for chat application where we can see the dynamic cell depedns on the text size jadksbjkdasbcskjcbskcbskdcvbskdcvbaskdjvbksjdvbaskdjvbaksdvbkasdvskbdv", isOwnMsg: true,  msgDate : Date.dateFromCustomString(customString: "27/02/2019")),
+                               ]
+
     
+    fileprivate func groupDatabyDate()
+    {
+        let gropedMessages = Dictionary(grouping: messagesFromServer) { (element) -> Date in
+            return element.msgDate
+        }
+        
+        let sortedKeys = gropedMessages.keys.sorted()
+        sortedKeys.forEach { (key) in
+            let values = gropedMessages[key]
+            
+            chatMessages.append(values ?? [])
+        }
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        groupDatabyDate()
         self.title = "Messages"
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
