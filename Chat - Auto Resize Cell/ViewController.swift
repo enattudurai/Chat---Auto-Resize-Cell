@@ -28,6 +28,19 @@ extension Date
 
 class DateHeaderLabel : UILabel
 {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        backgroundColor = .gray
+        textAlignment = .center
+        translatesAutoresizingMaskIntoConstraints = false
+        
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override var intrinsicContentSize: CGSize
     {
         let originalSize = super.intrinsicContentSize
@@ -112,11 +125,7 @@ class ViewController: UITableViewController {
         let content = chatMessages[section].first
         
         let dateLabel  = DateHeaderLabel()
-        dateLabel.backgroundColor = .gray
         dateLabel.text = dateFormatter.string(from: (content?.msgDate) ?? Date())
-        dateLabel.textAlignment = .center
-        
-        dateLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let containerView = UIView()
         containerView.addSubview(dateLabel)
